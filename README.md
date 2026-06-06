@@ -157,3 +157,4 @@ erDiagram
     PATIENT ||--o{ APPOINTMENT : "books"
     SLOT ||--o| APPOINTMENT : "converted to"
     USER ||--o{ NOTIFICATION : "receives"
+Task 1 Complete.
