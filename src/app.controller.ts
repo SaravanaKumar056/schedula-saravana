@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, UseGuards, Request, Query, Param } from '@nestjs/common';
 import { AuthGuard } from './auth/auth.guard';
 import { RolesGuard } from './auth/roles.guard';
 import { Roles } from './auth/roles.decorator';
@@ -53,5 +53,21 @@ export class AppController {
   @Patch('patient/profile')
   async updatePatientProfile(@Request() req, @Body() body: any) {
     return this.usersService.updatePatientProfile(req.user.sub, body);
+  }
+
+  //DOCTOR DISCOVERY ROUTES (Patients Only)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.PATIENT)
+  @Get('doctor')
+  async discoverDoctors(@Query() query: any) {
+    return this.usersService.findAllDoctors(query);
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.PATIENT)
+  @Get('doctor/:id')
+  async getDoctorById(@Param('id') id: string) {
+    // Convert the string ID from the URL into a number
+    return this.usersService.findOneDoctorById(Number(id));
   }
 }
