@@ -12,7 +12,8 @@ import { DoctorProfile } from './users/doctor-profile.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: 'postgresql://postgres:HDKoKB10@sarav@localhost:5432/internship_db',
+      url: process.env.DATABASE_URL,
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
       autoLoadEntities: true,
       synchronize: false,
       entities: [User, DoctorProfile, PatientProfile],
